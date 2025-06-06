@@ -1,14 +1,12 @@
 package onehajo.seurasaeng.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
-
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -35,14 +33,14 @@ public class Answer {
     @JoinColumn(name = "manager_id")
     private Manager manager;
 
-    @Lob
     @Column(name = "answer_content", columnDefinition = "TEXT")
     private String answer;
 
     @NotNull
     @Column(name = "answer_created_at", columnDefinition = "timestamp")
-    private LocalDate created_at;
+    private LocalDateTime created_at;
 
     // 생성자
     public Answer() {}
 }
+
