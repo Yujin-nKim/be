@@ -60,8 +60,8 @@ public class BoardingService {
 
         return BoardingRecordResDTO.builder()
                 .boarding_id(boarding.getId())
-                .departure(shuttle.getDeparture())
-                .destination(shuttle.getDestination())
+                .departure(shuttle.getDeparture().getLocationName())
+                .destination(shuttle.getDestination().getLocationName())
                 .boarding_time(boarding.getBoarding_time())
                 .build();
     }

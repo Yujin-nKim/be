@@ -1,5 +1,6 @@
 package onehajo.seurasaeng.qr;
 
+import onehajo.seurasaeng.entity.Location;
 import onehajo.seurasaeng.qr.dto.BoardingRecordResDTO;
 import onehajo.seurasaeng.qr.repository.BoardingRepository;
 import onehajo.seurasaeng.qr.repository.shuttle.ShuttleRepository;
@@ -48,8 +49,8 @@ public class BoardingServiceTest {
         shuttle = Shuttle.builder()
                 .id(1L)
                 .shuttleName("청사출근")
-                .departure("청사")
-                .destination("아이티센")
+                .departure(Location.builder().locationName("청사").build())
+                .destination(Location.builder().locationName("아이티센").build())
                 .build();
 
         boarding = Boarding.builder()
@@ -106,8 +107,8 @@ public class BoardingServiceTest {
 
         BoardingRecordResDTO dto = result.get(0);
         assertThat(dto.getBoarding_id()).isEqualTo(boarding.getId());
-        assertThat(dto.getDeparture()).isEqualTo(shuttle.getDeparture());
-        assertThat(dto.getDestination()).isEqualTo(shuttle.getDestination());
+        assertThat(dto.getDeparture()).isEqualTo(shuttle.getDeparture().getLocationName());
+        assertThat(dto.getDestination()).isEqualTo(shuttle.getDestination().getLocationName());
 
         verify(boardingRepository).findByUser_idOrderByBoarding_timeDesc(user_id);
         verify(shuttleRepository).findById(shuttle.getId());

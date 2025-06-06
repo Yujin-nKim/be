@@ -228,8 +228,8 @@ public class QRService {
         return ValidUserResDTO.builder()
                 .user_name(user.getName())
                 .boarding_time(boardingRecord.getBoarding_time())
-                .departure(shuttle.getDeparture())
-                .destination(shuttle.getDestination())
+                .departure(shuttle.getDeparture().getLocationName())
+                .destination(shuttle.getDestination().getLocationName())
                 .build();
     }
 }

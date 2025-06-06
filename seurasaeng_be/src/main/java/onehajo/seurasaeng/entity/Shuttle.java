@@ -28,12 +28,14 @@ public class Shuttle {
     private String shuttleName;
 
     @NotNull
-    @Column(name = "departure", columnDefinition = "VARCHAR(50)")
-    private String departure;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "departure", referencedColumnName = "location_id")
+    private Location departure;
 
     @NotNull
-    @Column(name = "destination", columnDefinition = "VARCHAR(50)")
-    private String destination;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "destination", referencedColumnName = "location_id")
+    private Location destination;
 
     @Column(name = "is_commute", columnDefinition = "BOOLEAN")
     private Boolean isCommute;
