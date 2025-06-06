@@ -20,6 +20,10 @@ public class Location {
     private Long locationId;
 
     @NotNull
+    @Column(name = "location_name")
+    private String locationName;
+
+    @NotNull
     @Column(name = "latitude")
     private Double latitude;
 
