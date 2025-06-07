@@ -13,7 +13,7 @@ import onehajo.seurasaeng.qr.exception.InvalidQRCodeException;
 import onehajo.seurasaeng.qr.exception.UserNotFoundException;
 import onehajo.seurasaeng.qr.repository.QrRepository;
 import onehajo.seurasaeng.qr.repository.shuttle.ShuttleRepository;
-import onehajo.seurasaeng.qr.repository.user.UserRepository;
+import onehajo.seurasaeng.user.repository.UserRepository;
 import onehajo.seurasaeng.qr.util.AESUtil;
 import onehajo.seurasaeng.entity.Boarding;
 import onehajo.seurasaeng.entity.Qr;
