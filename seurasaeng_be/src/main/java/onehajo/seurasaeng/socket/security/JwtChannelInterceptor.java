@@ -2,7 +2,7 @@ package onehajo.seurasaeng.socket.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import onehajo.seurasaeng.mock.JwtTokenProvider;
+import onehajo.seurasaeng.util.JwtUtil;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtChannelInterceptor implements ChannelInterceptor {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtUtil jwtUtil;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -33,11 +33,11 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
 
             String token = authHeader.substring(7);
 
-            if (!jwtTokenProvider.validateToken(token)) {
+            if (!jwtUtil.validateToken(token)) {
                 throw new IllegalArgumentException("유효하지 않은 JWT 토큰입니다.");
             }
 
-            String userId = jwtTokenProvider.getUserIdFromToken(token);
+            String userId = jwtUtil.getIdFromToken(token).toString();
             accessor.setUser(new StompPrincipal(userId));
         }
 
