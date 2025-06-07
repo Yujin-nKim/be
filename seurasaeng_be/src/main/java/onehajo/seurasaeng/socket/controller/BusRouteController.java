@@ -1,16 +1,13 @@
 package onehajo.seurasaeng.socket.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import onehajo.seurasaeng.socket.dto.EndMessagePayloadDTO;
 import onehajo.seurasaeng.socket.dto.MessagePayloadDTO;
+import onehajo.seurasaeng.socket.service.BusRouteService;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -18,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BusRouteController {
 
-    // WebSocket 메시지 송신을 위한 템플릿
-    private final SimpMessagingTemplate messagingTemplate;
+    private final BusRouteService busRouteService;
 
     /**
      *  실시간 GPS 데이터 수신 후 브로드캐스트.
@@ -30,12 +26,9 @@ public class BusRouteController {
      * @param payload  클라이언트로부터 수신한 GPS 위치 데이터
      */
     @MessageMapping("/route/{routeId}")
-    public void broadcastGps(@DestinationVariable Long routeId, MessagePayloadDTO payload) {
-        log.info("GPS 수신: {}", payload);
-        // 구독자들에게 실시간 위치 데이터 브로드캐스트
-        messagingTemplate.convertAndSend("/topic/route/" + routeId, payload);
+    public void broadcastGps(@DestinationVariable Long routeId, @Valid MessagePayloadDTO payload) {
+        busRouteService.broadcastGps(routeId, payload);
     }
-
 
     /**
      * 운행 종료 API
@@ -46,11 +39,6 @@ public class BusRouteController {
      */
     @PostMapping("/{routeId}/end")
     public void endRoute(@PathVariable Long routeId) {
-        log.info("운행 종료 요청 수신: routeId={}", routeId);
-
-        // 운행 종료 메시지 생성
-        EndMessagePayloadDTO endMessage = EndMessagePayloadDTO.create();
-        // 운행 종료 신호를 모든 구독자들에게 브로드캐스트
-        messagingTemplate.convertAndSend("/topic/route/" + routeId, endMessage);
+        busRouteService.endRoute(routeId);
     }
 }
