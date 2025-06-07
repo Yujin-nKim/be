@@ -1,4 +1,4 @@
-package onehajo.seurasaeng.qr.repository.shuttle;
+package onehajo.seurasaeng.shuttle.repository;
 
 import onehajo.seurasaeng.entity.Shuttle;
 import org.springframework.data.jpa.repository.JpaRepository;
