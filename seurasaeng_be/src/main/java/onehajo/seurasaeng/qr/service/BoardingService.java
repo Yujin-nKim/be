@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import onehajo.seurasaeng.qr.dto.BoardingRecordResDTO;
 import onehajo.seurasaeng.qr.repository.BoardingRepository;
-import onehajo.seurasaeng.qr.repository.shuttle.ShuttleRepository;
+import onehajo.seurasaeng.shuttle.repository.ShuttleRepository;
 import onehajo.seurasaeng.entity.Boarding;
 import onehajo.seurasaeng.entity.Shuttle;
 import org.springframework.data.redis.core.RedisTemplate;
