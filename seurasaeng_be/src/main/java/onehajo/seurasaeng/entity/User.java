@@ -3,16 +3,16 @@ package onehajo.seurasaeng.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import jakarta.validation.constraints.NotNull;
 
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users", schema = "seurasaeng_test")
 public class User {
 
@@ -42,9 +42,7 @@ public class User {
     private String image;
 
     @NotNull
+    @Builder.Default
     @Column(name = "user_read_newnoti", columnDefinition = "boolean default false")
-    private boolean read_newnoti;
-
-    // 생성자
-    public User() {}
+    private boolean read_newnoti = false;
 }
