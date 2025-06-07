@@ -25,12 +25,12 @@ public class Shuttle {
     private String shuttleName;
 
     @NotNull
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "departure", referencedColumnName = "location_id")
     private Location departure;
 
     @NotNull
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "destination", referencedColumnName = "location_id")
     private Location destination;
 
