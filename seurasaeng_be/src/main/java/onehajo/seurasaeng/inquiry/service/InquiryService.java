@@ -14,7 +14,7 @@ import onehajo.seurasaeng.inquiry.repository.AnswerRepository;
 import onehajo.seurasaeng.inquiry.repository.InquiryRepository;
 import onehajo.seurasaeng.inquiry.repository.ManagerRepository;
 import onehajo.seurasaeng.qr.exception.UserNotFoundException;
-import onehajo.seurasaeng.qr.repository.user.UserRepository;
+import onehajo.seurasaeng.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
