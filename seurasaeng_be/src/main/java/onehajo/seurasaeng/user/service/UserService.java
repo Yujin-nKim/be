@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import onehajo.seurasaeng.entity.User;
+import onehajo.seurasaeng.qr.exception.UserNotFoundException;
 import onehajo.seurasaeng.redis.service.RedisTokenService;
 import onehajo.seurasaeng.user.exception.*;
 import onehajo.seurasaeng.user.repository.UserRepository;
@@ -131,6 +132,18 @@ public class UserService {
         return MyInfoResDTO.builder()
                 .name(user.getName())
                 //.image(user.getImage())
+                .build();
+    }
+
+    public FavoriteShuttleResDto getFavoriteShuttleIds(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").replace("Bearer ", "");
+        Long id = jwtUtil.getIdFromToken(token);
+
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다."));
+
+        return FavoriteShuttleResDto.builder()
+                .favoritesWorkId(user.getFavorites_work_id().getId())
+                .favoritesHomeId(user.getFavorites_home_id().getId())
                 .build();
     }
 }

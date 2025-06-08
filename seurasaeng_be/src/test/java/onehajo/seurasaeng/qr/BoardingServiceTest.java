@@ -3,7 +3,7 @@ package onehajo.seurasaeng.qr;
 import onehajo.seurasaeng.entity.Location;
 import onehajo.seurasaeng.qr.dto.BoardingRecordResDTO;
 import onehajo.seurasaeng.qr.repository.BoardingRepository;
-import onehajo.seurasaeng.qr.repository.shuttle.ShuttleRepository;
+import onehajo.seurasaeng.shuttle.repository.ShuttleRepository;
 import onehajo.seurasaeng.qr.service.BoardingService;
 import onehajo.seurasaeng.entity.Boarding;
 import onehajo.seurasaeng.entity.Shuttle;

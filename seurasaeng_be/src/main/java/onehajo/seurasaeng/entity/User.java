@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.ColumnDefault;
 
 
 @Entity
@@ -45,4 +46,16 @@ public class User {
     @Builder.Default
     @Column(name = "user_read_newnoti", columnDefinition = "boolean default false")
     private boolean read_newnoti = false;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "favorites_work_id")
+    @ColumnDefault("4")
+    private Shuttle favorites_work_id;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "favorites_home_id")
+    @ColumnDefault("9")
+    private Shuttle favorites_home_id;
 }

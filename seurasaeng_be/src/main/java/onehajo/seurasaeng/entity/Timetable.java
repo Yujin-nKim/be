@@ -35,9 +35,17 @@ public class Timetable {
     @Column(name = "boarding_location", columnDefinition = "VARCHAR(100)")
     private String boardingLocation;
 
+    @NotNull
+    @Column(name = "dropoff_location", columnDefinition = "VARCHAR(100)")
+    private String dropoffLocation;
+
     @Column(name = "arrival_minutes", columnDefinition = "INTEGER")
     private Integer arrivalMinutes;
 
     @Column(name = "total_seats", columnDefinition = "INTEGER")
     private Integer totalSeats;
+
+    public void updateDepartureTime(LocalTime newTime) {
+        this.departureTime = newTime;
+    }
 }
