@@ -3,8 +3,11 @@ package onehajo.seurasaeng.util;
 import lombok.extern.slf4j.Slf4j;
 import onehajo.seurasaeng.qr.exception.InvalidQRCodeException;
 import onehajo.seurasaeng.qr.exception.UserNotFoundException;
+import onehajo.seurasaeng.shuttle.exception.InvalidTimetableSizeException;
+import onehajo.seurasaeng.shuttle.exception.ShuttleNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -48,4 +51,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "예상치 못한 오류입니다."));
     }
+
+
+    @ExceptionHandler(ShuttleNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleShuttleNotFound(Exception e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error",  e.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidTimetableSizeException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidTimetableSize(Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("error", e.getMessage()));
+    }
+
+
 }

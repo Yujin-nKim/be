@@ -1,15 +1,21 @@
 package onehajo.seurasaeng.shuttle.service;
 
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import onehajo.seurasaeng.entity.Shuttle;
 import onehajo.seurasaeng.entity.Timetable;
 import onehajo.seurasaeng.shuttle.dto.ShuttleWithTimetableDto;
 import onehajo.seurasaeng.shuttle.dto.TimetableDto;
 import onehajo.seurasaeng.shuttle.dto.TimetableResponseDto;
+import onehajo.seurasaeng.shuttle.dto.UpdateTimetableRequestDto;
+import onehajo.seurasaeng.shuttle.exception.InvalidTimetableSizeException;
+import onehajo.seurasaeng.shuttle.exception.ShuttleNotFoundException;
 import onehajo.seurasaeng.shuttle.repository.ShuttleRepository;
 import onehajo.seurasaeng.shuttle.repository.TimetableRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +95,33 @@ public class TimetableService {
         }
 
         return shuttleWithTimetableDtoList;
+    }
+
+    @Transactional
+    public void updateTimetable(UpdateTimetableRequestDto request) {
+        Shuttle shuttle = shuttleRepository.findById(request.getShuttleId())
+                .orElseThrow(() -> new ShuttleNotFoundException(request.getShuttleId()));
+
+        // 기존 시간표 조회 (departureTime 오름차순 정렬)
+        List<Timetable> timetables = timetableRepository.findByShuttleOrderByDepartureTimeAsc(shuttle);
+
+        // 요청 받은 시간표 리스트
+        List<UpdateTimetableRequestDto.TimetableDto> newTimetables = request.getTimetables();
+
+        if (timetables.size() != newTimetables.size()) {
+            throw new InvalidTimetableSizeException();
+        }
+
+        for (int i = 0; i < timetables.size(); i++) {
+            Timetable timetable = timetables.get(i);
+            UpdateTimetableRequestDto.TimetableDto dto = newTimetables.get(i);
+
+            // 시간만 업데이트
+            timetable.updateDepartureTime(LocalTime.parse(dto.getDepartureTime()));
+        }
+
+        // 저장
+        timetableRepository.saveAll(timetables);
     }
 
     private String formatDuration(Integer minutes) {
