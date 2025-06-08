@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/signup", "/api/users/login",
                                 "/api/users/verify-email", "/api/users/auto-login",
                                 "/api/users/email", "/api/users/forgot-password",
-                                "/api/users/me").permitAll()
+                                "/api/users/me", "/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
