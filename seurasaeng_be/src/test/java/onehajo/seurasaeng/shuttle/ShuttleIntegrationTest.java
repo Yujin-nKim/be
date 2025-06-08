@@ -61,8 +61,8 @@ public class ShuttleIntegrationTest {
     }
 
     @Test
-    @DisplayName("노선 목록 조회 API - 통합테스트")
-    void testGetShutltes() throws Exception {
+    @DisplayName("노선 목록 조회 API - 통합테스트 | 데이터 존재시 200 OK")
+    void testGetShuttles() throws Exception {
         mockMvc.perform(get("/api/shuttles")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -73,7 +73,18 @@ public class ShuttleIntegrationTest {
     }
 
     @Test
-    @DisplayName("노선 위치 정보 포함 목록 조회 API - 통합테스트")
+    @DisplayName("노선 목록 조회 API - 통합테스트 | 데이터 없을 시 204 No Content")
+    void testGetShuttles_No_Content() throws Exception {
+        shuttleRepository.deleteAll();
+        locationRepository.deleteAll();
+
+        mockMvc.perform(get("/api/shuttles")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("위치 정보 포함 노선 목록 조회 API - 통합테스트 | 데이터 존재시 200 OK")
     void testGetShuttlesWithLocation() throws Exception {
         mockMvc.perform(get("/api/shuttles/locations")
                         .accept(MediaType.APPLICATION_JSON))
@@ -82,5 +93,16 @@ public class ShuttleIntegrationTest {
                 .andExpect(jsonPath("$[0].departureLongitude").value(126.9780))
                 .andExpect(jsonPath("$[0].destinationLatitude").value(37.5665))
                 .andExpect(jsonPath("$[0].destinationLongitude").value(126.9780));
+    }
+
+    @Test
+    @DisplayName("위치 정보 포함 노선 목록 조회 API - 통합테스트 | 데이터 없을 시 204 No Content")
+    void testGetShuttlesWithLocation_No_Content() throws Exception {
+        shuttleRepository.deleteAll();
+        locationRepository.deleteAll();
+
+        mockMvc.perform(get("/api/shuttles/locations")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
     }
 }
