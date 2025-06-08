@@ -96,4 +96,10 @@ public class UserController {
 
         return new ResponseEntity<MyInfoResDTO>(myInfoResDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/me/preferences")
+    public ResponseEntity<FavoriteShuttleResDto> getFavorites(HttpServletRequest request) {
+        FavoriteShuttleResDto response = userService.getFavoriteShuttleIds(request);
+        return ResponseEntity.ok(response);
+    }
 }
