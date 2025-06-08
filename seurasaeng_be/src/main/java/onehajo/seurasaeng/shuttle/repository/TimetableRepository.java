@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface TimetableRepository extends JpaRepository<Timetable, Long> {
     List<Timetable> findByShuttleOrderByDepartureTimeAsc(Shuttle shuttle);
-
+    void deleteByShuttle(Shuttle shuttle);
 }

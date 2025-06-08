@@ -44,4 +44,8 @@ public class Timetable {
 
     @Column(name = "total_seats", columnDefinition = "INTEGER")
     private Integer totalSeats;
+
+    public void updateDepartureTime(LocalTime newTime) {
+        this.departureTime = newTime;
+    }
 }
