@@ -22,7 +22,7 @@ public class MockGenerateTokenController {
     @GetMapping("/test-token")
     public Map<String, String> generateTestToken() {
         Optional<User> user = userRepository.findByEmail("yujin@example.com");
-        String token = jwtUtil.generateToken(user.get().getId(), user.get().getName(), user.get().getEmail());
+        String token = jwtUtil.generateToken(user.get().getId(), user.get().getName(), user.get().getEmail(), "USER");
         return Map.of("accessToken", token);
     }
 }
