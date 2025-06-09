@@ -40,7 +40,8 @@ public class SecurityConfig {
                                 "/api/users/verify-email", "/api/users/auto-login",
                                 "/api/users/email", "/api/users/forgot-password",
                                 "/api/users/me", "/ws/**", "/v3/api-docs/**",
-                                "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                                "/swagger-ui.html", "/swagger-ui/**",
+                                "/api/auth/test-token", "/api/count/**", "/test/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
