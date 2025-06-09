@@ -3,13 +3,16 @@ package onehajo.seurasaeng.user.service;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
+import onehajo.seurasaeng.entity.Shuttle;
 import onehajo.seurasaeng.entity.User;
 import onehajo.seurasaeng.qr.exception.UserNotFoundException;
 import onehajo.seurasaeng.redis.service.RedisTokenService;
+import onehajo.seurasaeng.shuttle.repository.ShuttleRepository;
 import onehajo.seurasaeng.user.exception.*;
 import onehajo.seurasaeng.user.repository.UserRepository;
 import onehajo.seurasaeng.util.JwtUtil;
 import onehajo.seurasaeng.user.dto.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +25,18 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final RedisTokenService redisTokenService;
+    private final ShuttleRepository shuttleRepository;
 
-    public UserService(onehajo.seurasaeng.user.repository.UserRepository userRepository,
+
+    public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        JwtUtil jwtUtil,
-                       RedisTokenService redisTokenService) {
+                       RedisTokenService redisTokenService, ShuttleRepository shuttleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
         this.redisTokenService = redisTokenService;
+        this.shuttleRepository = shuttleRepository;
     }
 
     @Transactional
@@ -45,10 +51,15 @@ public class UserService {
             throw new RuntimeException("이미 존재하는 사용자입니다.");
         }
 
+        Shuttle defaultWork = shuttleRepository.getReferenceById(4L);
+        Shuttle defaultHome = shuttleRepository.getReferenceById(9L);
+
         User user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .favorites_work_id(defaultWork)
+                .favorites_home_id(defaultHome)
                 .build();
 
         userRepository.save(user);
